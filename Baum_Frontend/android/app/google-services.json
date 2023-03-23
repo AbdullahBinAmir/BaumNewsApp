@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "343865192464",
+    "project_id": "newsppbaum",
+    "storage_bucket": "newsppbaum.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343865192464:android:df39552661093667fb9a95",
+        "android_client_info": {
+          "package_name": "com.baumnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343865192464-pesqf8rvtsd9ejeet3c08nqq7r3rclia.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.baumnews",
+            "certificate_hash": "05de03fa4fa973d6f7f2f910bb684814faa8917a"
+          }
+        },
+        {
+          "client_id": "343865192464-s9qam1l7nn4j5a0pucvm1rbfvtnh8nfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBSXeHgCdgo63oWv0FYUpui_zvFqHf1u0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343865192464-6i3i5e3i5gunn3np12r87ucgjnp6f6v0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
