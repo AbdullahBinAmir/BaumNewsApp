@@ -1,0 +1,1 @@
+export const globalAPI = 'http://localhost:8000/api/'
