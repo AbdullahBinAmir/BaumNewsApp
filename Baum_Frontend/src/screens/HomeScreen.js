@@ -23,6 +23,59 @@ const HomeScreen = ({navigation}) => {
       itemVisiblePercentThreshold: 75,
   }
 
+  // handle Post Impression Time 
+  const handlePIT = (articleId,pname,timeSpent)=>{
+    const data=JSON.stringify({
+      id:globalThis.userData._id,
+      pname: pname,
+      timeSpent: timeSpent,
+      articleId: articleId
+      })
+    fetch(`${globalAPI}getpit`, {
+        method: 'POST',
+        headers: {
+          'Accept':'application/json',
+          'Content-Type': 'application/json'
+        },
+        body:data
+      })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            console.log(responseJson)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+}
+
+  const handleTimeStamp = (id,pname) => {
+    console.log('load starts')
+    if(!globalThis.impressionTime){
+      globalThis.impressionTime=new Date().getTime()
+      console.log('initial Time Stamp',globalThis.impressionTime)
+      globalThis.articleId=id
+      globalThis.source_name=pname
+    }
+    if(globalThis.impressionTime){
+      const endTime = new Date().getTime();
+      const elapsedTime = Math.floor((endTime - globalThis.impressionTime) / 1000); // in seconds
+      if(elapsedTime>15 && globalThis.scrollCount>1){
+        console.log('call api for time stamp in seconds is',elapsedTime)
+        console.log('Id and Publisher Name is ',globalThis.articleId + ' ' + globalThis.source_name)
+        handlePIT(globalThis.articleId,globalThis.source_name,elapsedTime)
+        globalThis.impressionTime=new Date().getTime()
+        globalThis.articleId=id
+        globalThis.source_name=pname
+        globalThis.scrollCount=0
+      }
+    }
+    if(globalThis.articleId!==id)
+    {
+      globalThis.articleId=id
+      globalThis.source_name=pname
+    }
+  };
+
   // on change of every article
   const handleOnViewableItemsChange = React.useCallback(({viewableItems, changed})=>{
     //console.log(viewableItems[0])
@@ -32,6 +85,8 @@ const HomeScreen = ({navigation}) => {
       // saving analytics using amplitude
       logEvent('Article Viewed', { article_id: viewableItems[0].item.id });
       //console.log('URL-Added',viewableItems[0].item.url)
+      // Setting the Impression Time 
+      handleTimeStamp(viewableItems[0].item.id,viewableItems[0].item.source_name)
     }
   },[])
 
@@ -164,7 +219,7 @@ const HomeScreen = ({navigation}) => {
           viewabilityConfig={viewabilityConfig}
           onViewableItemsChanged={handleOnViewableItemsChange}
           renderItem={({item}) => (
-                <GetArticleContent url={item.url} navigation={navigation} />
+                <GetArticleContent id={item.id} pname={item.source_name} url={item.url} navigation={navigation} />
           )}
         />
     </View>

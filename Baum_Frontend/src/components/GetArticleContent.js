@@ -5,9 +5,11 @@ import CookieManager from '@react-native-cookies/cookies';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const GetArticleContent = ({url,navigation}) => {
+const GetArticleContent = ({id,pname,url,navigation}) => {
 
   const webViewRef = useRef(null)
+  const [scrollCount, setScrollCount] = useState(0);
+  const [startStamp, setStartStamp] = useState();
   const [webViewLoaded, setWebViewLoaded] = useState(false);
 
   const [scrollEnabled, setScrollEnabled] = useState(true);
@@ -26,19 +28,10 @@ const GetArticleContent = ({url,navigation}) => {
   const handleScroll = event => {
     const offsetY = event.nativeEvent.contentOffset.y;
     setIsScroll(offsetY <= 0 || offsetY >= event.nativeEvent.contentSize.height - event.nativeEvent.layoutMeasurement.height);
+    setScrollCount(scrollCount + 1);
+    globalThis.scrollCount=scrollCount
+    console.log(globalThis.scrollCount)
   };
-
-  {
-/*     const timeoutRef = useRef(null);
-
-    const handleScroll = () => {
-      setIsScroll(true);
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIsScroll(false);
-      }, 1000); // wait 2 seconds after the last scroll event before hiding navbar
-    }; */
-  }
 
   const panResponder = useRef(
     PanResponder.create({
@@ -60,6 +53,10 @@ const GetArticleContent = ({url,navigation}) => {
         console.error('Error storing cookies:', error);
       });
   };
+
+/*   const handleWebViewScroll = () => {
+    setScrollCount((count) => count + 1);
+  }; */
 
 
   //adding fullstory analytics by using the script and injecting in webview

@@ -50,7 +50,7 @@ export default function SignIn({navigation}) {
         await AsyncStorage.setItem('session_token', data._id);
         await AsyncStorage.setItem('user_token','0');
         globalThis.userData=data
-        value==='1' ? navigation.navigate('HomeBottomNav') : navigation.navigate('IntersestListScreen')
+        value==='1' ? navigation.navigate('HomeBottomNav') : navigation.navigate('IntersestListScreen',{uid:data._id})
       }
       else{
         setDataCheck(true)

@@ -3,20 +3,30 @@ import React, { useState } from 'react'
 import { Interests } from '../global/InterestList'
 import { colors } from '../global/Color'
 import Icon from 'react-native-vector-icons/AntDesign'
+import { globalAPI } from '../global/globalAPI_URI'
 
 const  SCREEN_WIDTH = Dimensions.get('window').width
 
 // signle interest item code
-const InterestBox = ({item, changeCount, count})=>{
+const InterestBox = ({item, changeCount, count, list, setList})=>{
+    function removeItemOnce(arr, value) {
+        var index = arr.indexOf(value);
+        if (index > -1) {
+          arr.splice(index, 1);
+        }
+        return arr;
+      }
     const [selected,setSelected] = React.useState(false)
     return(
         <TouchableOpacity
             onPress={()=>{
                 if(selected){
                     changeCount(--count)
+                    setList(removeItemOnce(list,item.name))
                 }
                 else{
                     changeCount(++count)
+                    setList([...list,item.name])
                 }
                 setSelected(!selected)
             }}
@@ -33,8 +43,33 @@ const InterestBox = ({item, changeCount, count})=>{
 }
 
 // getting intrests list and loading in the list
-const IntersestListScreen = ({navigation}) => {
+const IntersestListScreen = ({navigation,route}) => {
     const [count,setCount] = useState(0)
+    const [list,setList] = useState([])
+
+    const handleInterestsSave = ()=>{
+        const data=JSON.stringify({
+            id:route.params.uid,
+            catList:list
+        })        
+        console.log(data)
+          fetch(`${globalAPI}addinterestsbyId`, {
+              method: 'POST',
+              headers: {
+                'Accept':'application/json',
+                'Content-Type': 'application/json'
+              },
+              body:data
+            })
+              .then((response) => response.json())
+              .then((responseJson) => {
+                    navigation.navigate('HomeBottomNav')
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+    }
+
   return (
     <View style={styles.container}>
         <Pressable style={{marginHorizontal:12,marginVertical:18}}
@@ -59,13 +94,13 @@ const IntersestListScreen = ({navigation}) => {
             data={Interests}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({item}) => (
-                <InterestBox item={item} changeCount={setCount} count={count} />
+                <InterestBox item={item} changeCount={setCount} count={count} list={list} setList={setList} />
             )}
             />
         </View>  
         <Pressable style={count!==0?styles.submitBtn:{...styles.submitBtn,backgroundColor:'#E1E1E1'}}
             onPress={()=>{
-                count>0?navigation.navigate('HomeBottomNav'):
+                count>0?handleInterestsSave():
                 alert('Please select atleast one interest...')
             }}
         >
