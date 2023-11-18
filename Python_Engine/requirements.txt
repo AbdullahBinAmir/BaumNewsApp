@@ -52,7 +52,7 @@ protobuf==3.20.3
 psutil @ file:///opt/conda/conda-bld/psutil_1656431268089/work
 ptyprocess @ file:///home/conda/feedstock_root/build_artifacts/ptyprocess_1609419310487/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
 pure-eval @ file:///home/conda/feedstock_root/build_artifacts/pure_eval_1642875951954/work
-pyarrow==11.0.0
+pyarrow==14.0.1
 pydeck==0.8.0
 Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1672682006896/work
 Pympler==1.0.1
